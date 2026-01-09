@@ -254,7 +254,16 @@ class App {
             info.className = 'lut-info';
             info.innerHTML = `<span class="lut-name" title="${lut.name}">${lut.name}</span>`;
 
+            const addBtn = document.createElement('button');
+            addBtn.className = 'lut-add-btn';
+            addBtn.innerHTML = 'ADD';
+            addBtn.onclick = (e) => {
+                e.stopPropagation();
+                this.addToChain(lut.id);
+            };
+
             card.appendChild(preview);
+            card.appendChild(addBtn);
             card.appendChild(info);
             libraryEl.appendChild(card);
         });
@@ -280,17 +289,22 @@ class App {
             const barContainer = document.createElement('div');
             barContainer.className = 'intensity-bar-container';
 
+            const barTrack = document.createElement('div');
+            barTrack.className = 'intensity-bar-track';
+
             const barFill = document.createElement('div');
             barFill.className = 'intensity-bar-fill';
-            const initialPercent = `${item.intensity * 100}%`;
-            barFill.style.width = initialPercent;
 
             const dragHandle = document.createElement('div');
             dragHandle.className = 'intensity-drag-handle';
+
+            const initialPercent = `${item.intensity * 100}%`;
+            barFill.style.width = initialPercent;
             dragHandle.style.left = initialPercent;
 
-            barContainer.appendChild(barFill);
-            barContainer.appendChild(dragHandle);
+            barTrack.appendChild(barFill);
+            barTrack.appendChild(dragHandle);
+            barContainer.appendChild(barTrack);
 
             const label = document.createElement('div');
             label.className = 'intensity-label';
@@ -299,16 +313,22 @@ class App {
             card.onmousedown = (e) => {
                 if (e.button !== 0) return; // Only left click
                 const rect = card.getBoundingClientRect();
-                // Match CSS: left: 20px, right: 20px
-                const barLeft = rect.left + 20;
-                const barWidth = rect.width - 40;
+                // Match CSS: .intensity-bar-container has left: 12px and padding: 0 15px
+                const totalOffset = 12 + 15;
+                const barLeft = rect.left + totalOffset;
+                const barWidth = rect.width - (totalOffset * 2);
 
                 const update = (moveEvent) => {
                     const x = moveEvent.clientX - barLeft;
                     const newIntensity = Math.max(0, Math.min(1, x / barWidth));
                     this.updateIntensity(item.id, newIntensity);
-                };
 
+                    // Sync UI elements in real-time
+                    const percent = `${newIntensity * 100}%`;
+                    barFill.style.width = percent;
+                    dragHandle.style.left = percent;
+                    label.textContent = `${Math.round(newIntensity * 100)}%`;
+                };
 
                 update(e);
 
@@ -317,7 +337,7 @@ class App {
                     window.removeEventListener('mousemove', update);
                 }, { once: true });
 
-                e.preventDefault(); // Prevent text selection/drag ghosting
+                e.preventDefault();
             };
 
             const img = document.createElement('div');
