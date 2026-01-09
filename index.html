@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <link rel="stylesheet" href="./src/style.css">
@@ -13,6 +14,7 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
 </head>
+
 <body>
   <div id="app">
     <header class="top-bar">
@@ -21,6 +23,7 @@
         <button id="export-photo-btn" class="btn btn-primary">Export Photo</button>
       </div>
     </header>
+
     <main class="middle-area">
       <section class="preview-section panel">
         <div class="panel-header">Preview</div>
@@ -35,6 +38,7 @@
           <button id="zoom-reset">100%</button>
         </div>
       </section>
+
       <section class="merger-section panel">
         <div class="panel-header">LUT Merger</div>
         <div id="lut-chain" class="lut-chain">
@@ -47,6 +51,7 @@
           <button id="export-lut-btn" class="btn btn-secondary">Export the merged LUT</button>
         </div>
       </section>
+
       <aside class="library-section panel">
         <div class="panel-header">LUT Library</div>
         <div id="lut-library" class="lut-grid">
@@ -58,6 +63,7 @@
         </div>
       </aside>
     </main>
+
     <footer class="bottom-area">
       <div class="photo-stream-container">
         <div class="add-photo-zone">
@@ -78,4 +84,5 @@
   </div>
   <script type="module" src="./src/main.js"></script>
 </body>
+
 </html>
